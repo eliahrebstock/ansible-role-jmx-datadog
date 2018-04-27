@@ -1,5 +1,7 @@
 # Ansible Role JMX Datadog
 
+![Build Status](https://travis-ci.org/peopledoc/ansible-role-jmx-datadog.svg?branch=master)
+
 Overview
 --------
 Ansible role to setup JMX credentials and to add Datadog java agent. 
