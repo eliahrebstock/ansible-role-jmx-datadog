@@ -1,5 +1,18 @@
 ---
 
+- name: group {{ jvm_user }}
+  group:
+    name: "{{ jvm_group }}"
+    gid: "{{ jvm_group_id|default(omit) }}"
+    state: present
+
+- name: user {{ jvm_user }}
+  user:
+    name: "{{ jvm_user }}"
+    group: "{{ jvm_group }}"
+    uid: "{{ jvm_user_id|default(omit) }}"
+    state: present
+
 - name: username/password in jmxremote.password
   lineinfile:
     path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.password

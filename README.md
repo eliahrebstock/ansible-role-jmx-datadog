@@ -17,6 +17,9 @@ user: username
 password: changeit
 jvm_user: nova # defaults to nova
 jvm_group: nova # defaults to nova
+jvm_user_id: 1000 # optional
+jvm_group_id: 1000 # optional
+
 ```
 
 `user` and `password` are the username/password pair for JMX (with readonly access).
