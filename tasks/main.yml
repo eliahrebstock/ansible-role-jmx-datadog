@@ -3,7 +3,7 @@
 - name: username/password in jmxremote.password
   lineinfile:
     path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.password
-    line: "{{ user }} {{ pass }}"
+    line: "{{ user }} {{ password }}"
     owner: nova
     group: nova
     mode: 0600
