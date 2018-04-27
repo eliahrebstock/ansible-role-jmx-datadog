@@ -12,7 +12,7 @@ Usage
 Add the role to your playbook :
 
 ```yaml
-role: peopledoc.jmx-datadog
+role: ansible-role-jmx-datadog
 user: username
 password: changeit
 jvm_user: nova # defaults to nova
