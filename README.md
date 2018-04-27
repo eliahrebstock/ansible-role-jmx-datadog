@@ -47,6 +47,14 @@ And the following JVM parameters :
 -javaagent:/usr/local/bin/dd-java-agent.jar -Ddd.service.name=instance-name-on-datadog-interface
 ```
 
+Tests
+-----
+
+Tests can be executed using:
+
+`$ molecule --debug test --driver-name docker`
+
+The dependencies are ansible, molecule and docker-py Python packages.
 
 Team
 ----
