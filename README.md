@@ -13,7 +13,6 @@ Add the role to your playbook :
 role: peopledoc.jmx-datadog
 user: username
 password: changeit
-port: 7199
 ```
 
 You may want to add the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog) too :
