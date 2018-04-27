@@ -52,11 +52,6 @@ Contributing
 [CONTRIBUTING](https://github.com/peopledoc/tribe-java/blob/master/documentation/contribution.md)
 
 
-Installing
-----------
-
-`ansible-galaxy`
-
 License
 -------
 BSD
