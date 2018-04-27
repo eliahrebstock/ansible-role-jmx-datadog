@@ -13,7 +13,14 @@ Add the role to your playbook :
 role: peopledoc.jmx-datadog
 user: username
 password: changeit
+jvm_user: nova # defaults to nova
+jvm_group: nova # defaults to nova
 ```
+
+`user` and `password` are the username/password pair for JMX (with readonly access).
+
+`jvm_user` and `jvm_group` are the user/group who run the jvm 
+(change access rights on default `jmxremote.password` and `jmxremote.access` files).
 
 You may want to add the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog) too :
 

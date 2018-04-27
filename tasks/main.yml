@@ -4,8 +4,8 @@
   lineinfile:
     path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.password
     line: "{{ user }} {{ password }}"
-    owner: nova
-    group: nova
+    owner: "{{ jvm_user }}"
+    group: "{{ jvm_group }}"
     mode: 0600
     create: yes
     state: present
@@ -14,8 +14,8 @@
   lineinfile:
     path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access
     line: "{{ user }} readonly"
-    owner: nova
-    group: nova
+    owner: "{{ jvm_user }}"
+    group: "{{ jvm_group }}"
     create: yes
     state: present
 
