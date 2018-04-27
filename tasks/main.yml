@@ -1,0 +1,32 @@
+---
+
+- name: username/password in jmxremote.password
+  lineinfile:
+    path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.password
+    line: "{{ jmxremote_username }} {{ jmxremote_password }}"
+    owner: nova
+    group: nova
+    mode: 0600
+    create: yes
+    state: present
+
+- name: username/role in jmxremote.access
+  lineinfile:
+    path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access
+    line: "{{ jmxremote_username }} readonly"
+    owner: nova
+    group: nova
+    create: yes
+    state: present
+
+- name: Add CA certificates
+  apt:
+    name: ca-certificates
+    update_cache: yes
+    state: present
+
+- name: Add java datadog agent for applicative traces
+  get_url:
+    url: https://search.maven.org/remote_content?g=com.datadoghq&a=dd-java-agent&v=LATEST
+    dest: /usr/local/bin/dd-java-agent.jar
+  

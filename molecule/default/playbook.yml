@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  become: yes
+  roles:
+    - role: novafloss.oracle-java
+    - role: peopledoc.jmx-datadog
+      user: "{{ jmxremote_username }}"
+      password: "{{ jmxremote_password }}"
+      port: "{{ jmxremote_port }}"
