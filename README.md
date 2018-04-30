@@ -34,6 +34,8 @@ role: Datadog.datadog
 become: yes
 datadog_api_key: "{{ vault_datadog_api_key }}"
 datadog_agent_version: "1:6.1.4-1"
+datadog_config:
+    tags: "env:{{ inventory_dir | basename }}"
 datadog_checks:
     jmx:
         init_config:
