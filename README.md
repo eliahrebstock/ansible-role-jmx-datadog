@@ -4,7 +4,7 @@
 
 Overview
 --------
-Ansible role to setup JMX credentials and to add Datadog java agent. 
+Ansible role to setup JMX credentials and to add Datadog java agent.
 
 Usage
 -----
@@ -25,7 +25,7 @@ roles:
 
 `user` and `password` are the username/password pair for JMX (with readonly access).
 
-`jvm_user` and `jvm_group` are the user/group who run the jvm 
+`jvm_user` and `jvm_group` are the user/group who run the jvm
 (change access rights on default `jmxremote.password` and `jmxremote.access` files).
 
 You may want to add the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog) too :
