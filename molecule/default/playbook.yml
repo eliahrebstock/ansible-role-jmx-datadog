@@ -4,7 +4,8 @@
   become: yes
   roles:
     - role: ansible-role-jmx-datadog
-      user: jmxuser
-      password: test123abc
-      jvm_user: root
-      jvm_group: root
+      vars:
+        user: jmxuser
+        password: test123abc
+        jvm_user: root
+        jvm_group: root
