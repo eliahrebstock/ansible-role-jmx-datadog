@@ -17,15 +17,15 @@ roles:
     vars:
       user: username
       password: changeit
-      jvm_user: nova # defaults to nova
-      jvm_group: nova # defaults to nova
+      jvm_user: user
+      jvm_group: group
       jvm_user_id: 1000 # optional
       jvm_group_id: 1000 # optional
 ```
 
 `user` and `password` are the username/password pair for JMX (with readonly access).
 
-`jvm_user` and `jvm_group` are the user/group who run the jvm
+`jvm_user` and `jvm_group` are the user/group who will run the application using JMX
 (change access rights on default `jmxremote.password` and `jmxremote.access` files).
 
 You may want to add the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog) too :
@@ -65,16 +65,6 @@ Tests can be executed using:
 `$ molecule --debug test --driver-name docker`
 
 The dependencies are ansible, molecule and docker-py Python packages.
-
-Team
-----
-[Tribe Java](https://github.com/peopledoc/tribe-java/blob/master/documentation/applications.md)
-
-
-Contributing
-------------
-[CONTRIBUTING](https://github.com/peopledoc/tribe-java/blob/master/documentation/contribution.md)
-
 
 License
 -------
