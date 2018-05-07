@@ -1,6 +1,0 @@
----
-
-user: monitorRole
-password: changeit
-jvm_user: nova
-jvm_group: nova

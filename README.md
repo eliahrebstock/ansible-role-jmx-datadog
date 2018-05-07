@@ -24,6 +24,7 @@ roles:
 ```
 
 `user` and `password` are the username/password pair for JMX (with readonly access).
+They are mandatory and should be the same in the Datadog configuration.
 
 `jvm_user` and `jvm_group` are the user/group who will run the application using JMX
 (change access rights on default `jmxremote.password` and `jmxremote.access` files).
