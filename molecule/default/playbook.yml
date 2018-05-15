@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  become: yes
+  become: true
   roles:
     - role: ansible-role-jmx-datadog
       vars:
@@ -9,3 +9,14 @@
         password: test123abc
         jvm_user: root
         jvm_group: root
+        jmx_port: 7199
+        app_instance_name: app-test-instance
+
+        other_datadog_checks:
+          test:
+            name: test
+
+        datadog_api_key: apikey
+        datadog_agent_version: "1:6.1.4-1"
+        datadog_config:
+          tags: env:testing

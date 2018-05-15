@@ -13,4 +13,17 @@ galaxy_info:
   categories:
     - system
 
-dependencies: []
+dependencies:
+  - role: Datadog.datadog
+    tags: datadog_agent
+    vars:
+      jmx_check_config:
+        jmx:
+          init_config:
+          instances:
+            - host: localhost
+              port: "{{ jmx_port }}"
+              user: "{{ user }}"
+              password: "{{ password }}"
+              name: "{{ app_instance_name }}"
+      datadog_checks: "{{ jmx_check_config|combine(other_datadog_checks) }}"

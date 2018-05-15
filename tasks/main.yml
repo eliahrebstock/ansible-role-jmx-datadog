@@ -20,7 +20,7 @@
     owner: "{{ jvm_user }}"
     group: "{{ jvm_group }}"
     mode: 0600
-    create: yes
+    create: true
     state: present
 
 - name: username/role in jmxremote.access
@@ -29,13 +29,13 @@
     line: "{{ user }} readonly"
     owner: "{{ jvm_user }}"
     group: "{{ jvm_group }}"
-    create: yes
+    create: true
     state: present
 
 - name: Add CA certificates
   apt:
     name: ca-certificates
-    update_cache: yes
+    update_cache: true
     state: present
 
 - name: Add java datadog agent for applicative traces

@@ -18,3 +18,35 @@ def test_user_in_jmx_password(host):
 def test_user_in_jmx_access(host):
     path = "/usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access"
     assert host.file(path).contains("jmxuser readonly")
+
+
+def test_datadog_agent_installed(host):
+    assert host.exists("datadog-agent")
+    cmd = host.run("datadog-agent version")
+    assert cmd.rc == 0
+    assert "Agent 6.1.4" in cmd.stdout
+
+
+def test_datadog_yaml(host):
+    path = "/etc/datadog-agent/datadog.yaml"
+    ymlfile = host.file(path)
+    assert ymlfile.exists
+    assert ymlfile.contains("api_key: apikey")
+    assert ymlfile.contains("tags: env:testing")
+
+
+def test_datadog_jmx_yaml(host):
+    path = "/etc/datadog-agent/conf.d/jmx.yaml"
+    ymlfile = host.file(path)
+    assert ymlfile.exists
+    assert ymlfile.contains("name: app-test-instance")
+    assert ymlfile.contains("password: test123abc")
+    assert ymlfile.contains("port: 7199")
+    assert ymlfile.contains("user: jmxuser")
+
+
+def test_datadog_test_yaml(host):
+    path = "/etc/datadog-agent/conf.d/test.yaml"
+    ymlfile = host.file(path)
+    assert ymlfile.exists
+    assert ymlfile.contains("name: test")

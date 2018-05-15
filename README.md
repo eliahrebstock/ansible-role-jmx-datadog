@@ -17,10 +17,18 @@ roles:
     vars:
       user: username
       password: changeit
+      jmx_port: 7199
       jvm_user: user
       jvm_group: group
       jvm_user_id: 1000 # optional
       jvm_group_id: 1000 # optional
+      app_instance_name: instance-name-on-datadog-interface
+
+      datadog_api_key: "{{ vault_datadog_api_key }}"
+      datadog_agent_version: "1:6.1.4-1"
+      datadog_config:
+        tags: "env:{{ inventory_dir | basename }}"
+        ...
 ```
 
 `user` and `password` are the username/password pair for JMX (with readonly access).
@@ -29,26 +37,33 @@ They are mandatory and should be the same in the Datadog configuration.
 `jvm_user` and `jvm_group` are the user/group who will run the application using JMX
 (change access rights on default `jmxremote.password` and `jmxremote.access` files).
 
-You may want to add the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog) too :
+`jmx_port` is the port used by Datadog to contact the application using JMX on localhost.
+
+If the ansible remote user is not `root` this role might fail. You can add
+`become: true` to the role invocation in that case.
+
+This role has the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog) as
+a dependency and will configure the jmx check for it. You can add datadog role parameters
+as parameters of this role (like `datadog_api_key`). You can also skip this role with
+`--skip-tags datadog_agent`.
+
+**You need to add `Datadog.datadog` to the requirements.yml of your project**. Cf [requirements.yml](requirements.yml).
+
+If you want to add more datadog checks configurations, you'll have to use the
+`other_datadog_checks` variable as `datadog_checks` can't be override because
+it is already in use as a role dependency parameter. The role will combine
+`other_datadog_checks` and the check for jmx to obtain `datadog_checks`.
 
 ```yaml
 roles:
-  - role: Datadog.datadog
-    become: yes
+  - role: ansible-role-jmx-datadog
     vars:
-      datadog_api_key: "{{ vault_datadog_api_key }}"
-      datadog_agent_version: "1:6.1.4-1"
-      datadog_config:
-        tags: "env:{{ inventory_dir | basename }}"
-      datadog_checks:
-        jmx:
-          init_config:
-          instances:
-            - host: localhost
-              port: 7199
-              user: username
-              password: changeit
-              name: instance-name-on-datadog-interface
+    ...
+    other_datadog_checks:
+      nginx:
+        instances:
+          ...
+
 ```
 
 And the following JVM parameters :
