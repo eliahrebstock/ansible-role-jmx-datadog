@@ -73,6 +73,13 @@ And the following JVM parameters :
 -javaagent:/usr/local/bin/dd-java-agent.jar -Ddd.service.name=instance-name-on-datadog-interface
 ```
 
+This role doesn't setup SSL for JMX. You can safely disable it if the datadog
+agent and the application using JMX are on the same host (the scenario assumed
+by this role). If you setup the datadog agent on another host, you should setup SSL
+for JMX using
+[this documentation](https://docs.oracle.com/javase/1.5.0/docs/guide/management/agent.html#SSL_enabled)
+and add configuration from [this documentation](https://docs.datadoghq.com/integrations/java/).
+
 Tests
 -----
 
