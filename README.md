@@ -26,6 +26,7 @@ roles:
 
       datadog_api_key: "{{ vault_datadog_api_key }}"
       datadog_agent_version: "1:6.1.4-1"
+      datadog_java_integration: yes
       datadog_config:
         tags: "env:{{ inventory_dir | basename }}"
         ...
@@ -48,6 +49,10 @@ as parameters of this role (like `datadog_api_key`). You can also skip this role
 `--skip-tags datadog_agent`.
 
 **You need to add `Datadog.datadog` to the requirements.yml of your project**. Cf [requirements.yml](requirements.yml).
+
+If you want to install the Datadog agent but not the java integration from Datadog (for
+example, if you want to use another java agent), you can disable it with
+`datadog_java_integration: no`.
 
 If you want to add more datadog checks configurations, you'll have to use the
 `other_datadog_checks` variable as `datadog_checks` can't be override because

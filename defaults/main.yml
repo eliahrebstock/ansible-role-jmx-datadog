@@ -2,3 +2,4 @@
 
 jmx_port: 7199
 other_datadog_checks: {}
+datadog_java_integration: true

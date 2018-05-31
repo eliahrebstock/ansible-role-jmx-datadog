@@ -18,4 +18,4 @@ install:
   - travis_retry pip install "${ANSIBLE_REF}" molecule docker-py
 
 script:
-  - molecule test --driver-name docker
+  - molecule test --driver-name docker --all

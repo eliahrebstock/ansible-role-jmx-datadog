@@ -42,3 +42,4 @@
   get_url:
     url: https://search.maven.org/remote_content?g=com.datadoghq&a=dd-java-agent&v=LATEST
     dest: /usr/local/bin/dd-java-agent.jar
+  when: datadog_java_integration

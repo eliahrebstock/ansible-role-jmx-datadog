@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: molecule_test_instance
+    image: ${BASE_IMAGE:-debian:stretch}
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+scenario:
+  name: no_java_integration
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
