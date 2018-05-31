@@ -90,7 +90,7 @@ Tests
 
 Tests can be executed using:
 
-`$ molecule --debug test --driver-name docker`
+`$ molecule --debug test --driver-name docker --all`
 
 The dependencies are ansible, molecule and docker-py Python packages.
 
