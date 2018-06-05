@@ -26,4 +26,4 @@ dependencies:
               user: "{{ user }}"
               password: "{{ password }}"
               name: "{{ app_instance_name }}"
-      datadog_checks: "{{ other_datadog_checks|combine(jmx_check_config if datadog_java_integration else {}) }}"
+      datadog_checks: "{{ other_datadog_checks|combine(jmx_check_config) }}"

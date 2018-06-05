@@ -38,7 +38,7 @@ def test_datadog_yaml(host):
 def test_datadog_jmx_yaml(host):
     path = "/etc/datadog-agent/conf.d/jmx.d/conf.yaml"
     ymlfile = host.file(path)
-    assert not ymlfile.exists
+    assert ymlfile.exists
 
 
 def test_datadog_test_yaml(host):
