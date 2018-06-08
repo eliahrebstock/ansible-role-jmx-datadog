@@ -43,3 +43,14 @@
     url: https://search.maven.org/remote_content?g=com.datadoghq&a=dd-java-agent&v=LATEST
     dest: /usr/local/bin/dd-java-agent.jar
   when: datadog_java_integration
+
+- name: Register jvm options for DataDog as string
+  set_fact:
+    java_opts_datadog_jmx: "-Dcom.sun.management.jmxremote.port={{ jmx_port }}
+      -Dcom.sun.management.jmxremote.ssl=false
+      {%- if datadog_java_integration %} -javaagent:/usr/local/bin/dd-java-agent.jar{% endif %}
+      -Ddd.service.name={{ app_instance_name }}"
+
+- name: Register jvm options for DataDog as list
+  set_fact:
+    java_opts_datadog_jmx_list: "{{ java_opts_datadog_jmx.split(' ') }}"

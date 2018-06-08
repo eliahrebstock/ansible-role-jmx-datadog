@@ -71,11 +71,20 @@ roles:
 
 ```
 
-And the following JVM parameters :
+The JVM parameters needed to use JMX are registered in the `java_opts_datadog_jmx` ansible
+variable for later reuse in a playbook:
 
 ```
 -Dcom.sun.management.jmxremote.port=7199 -Dcom.sun.management.jmxremote.ssl=false
 -javaagent:/usr/local/bin/dd-java-agent.jar -Ddd.service.name=instance-name-on-datadog-interface
+```
+
+These parameters are also accessible as a list if needed in `java_opts_datadog_jmx`. You can use the following to add the JVM options:
+
+```yaml
+- name: task or role running jvm
+  environment:
+    - JAVA_TOOL_OPTIONS: "{{ java_opts_datadog_jmx }}"
 ```
 
 This role doesn't setup SSL for JMX. You can safely disable it if the datadog
