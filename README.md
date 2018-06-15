@@ -25,6 +25,7 @@ roles:
       jvm_group: group
       jvm_user_id: 1000 # optional
       jvm_group_id: 1000 # optional
+      app_instance_name: app
 
       datadog_api_key: "{{ vault_datadog_api_key }}"
       datadog_agent_version: "1:6.1.4-1"
@@ -55,6 +56,9 @@ Parameters
 * `user` and `password` are the username/password pair for JMX (with readonly access).
 They are mandatory. The same ones will be used with the Datadog integration. You can use
 them for other JMX usages if needed.
+
+* `app_instance_name` is used to define service name for Datadog in the JMX integration
+  and with the Datadog java agent (`-Ddd.service.name`).
 
 * `jvm_user` and `jvm_group` are the user/group who will run the application using JMX
 (change access rights on default `jmxremote.password` and `jmxremote.access` files in `$JAVA_HOME/jre/lib/management`).
