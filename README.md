@@ -102,7 +102,7 @@ variable for later reuse in a playbook:
 -javaagent:/usr/local/bin/dd-java-agent.jar -Ddd.service.name=instance-name-on-datadog-interface
 ```
 
-These parameters are also accessible as a list if needed in `java_opts_datadog_jmx`. You can use the following to add the JVM options:
+These parameters are also accessible as a list if needed in `java_opts_datadog_jmx_list`. You can use the following to add the JVM options:
 
 ```yaml
 - name: task or role running jvm
