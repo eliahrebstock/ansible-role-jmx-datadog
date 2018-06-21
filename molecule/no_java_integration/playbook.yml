@@ -3,6 +3,7 @@
   hosts: all
   become: true
   roles:
+    - role: peopledoc.java
     - role: ansible-role-jmx-datadog
       vars:
         user: jmxuser

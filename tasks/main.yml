@@ -13,9 +13,14 @@
     uid: "{{ jvm_user_id|default(omit) }}"
     state: present
 
+- name: Get JAVA_HOME
+  shell: . /etc/profile && echo $JAVA_HOME
+  register: JAVA_HOME
+  changed_when: false
+
 - name: username/password in jmxremote.password
   lineinfile:
-    path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.password
+    path: "{{ JAVA_HOME.stdout|default('/usr/lib/jvm/java-8-oracle') }}/jre/lib/management/jmxremote.password"
     line: "{{ user }} {{ password }}"
     owner: "{{ jvm_user }}"
     group: "{{ jvm_group }}"
@@ -25,7 +30,7 @@
 
 - name: username/role in jmxremote.access
   lineinfile:
-    path: /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access
+    path: "{{ JAVA_HOME.stdout|default('/usr/lib/jvm/java-8-oracle') }}/jre/lib/management/jmxremote.access"
     line: "{{ user }} readonly"
     owner: "{{ jvm_user }}"
     group: "{{ jvm_group }}"

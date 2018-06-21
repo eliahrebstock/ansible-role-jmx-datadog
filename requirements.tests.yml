@@ -1,0 +1,5 @@
+---
+
+- src: Datadog.datadog
+- name: peopledoc.java
+  src: https://github.com/peopledoc/ansible-role-java.git

@@ -11,12 +11,14 @@ def test_datadog_java_agent(host):
 
 
 def test_user_in_jmx_password(host):
-    path = "/usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.password"
+    java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout
+    path = java_home + "/jre/lib/management/jmxremote.password"
     assert host.file(path).contains("jmxuser test123abc")
 
 
 def test_user_in_jmx_access(host):
-    path = "/usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access"
+    java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout
+    path = java_home + "/jre/lib/management/jmxremote.access"
     assert host.file(path).contains("jmxuser readonly")
 
 
