@@ -75,6 +75,8 @@ them for other JMX usages if needed.
 * `datadog_java_integration: no` can be used to remove Datadog Java agent (the JMX integration will still
   be configured). You'll have to use another agent with the JMX parameters provided to this role.
 
+* `datadog_java_agent_version` is the version used to fetch the [Datadog Java agent](https://github.com/datadog/dd-trace-java) from [Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.datadoghq%22%20AND%20a%3A%22dd-java-agent%22). Defaults to `LATEST`.
+
 If you want to add more datadog checks configurations, you'll have to use the
 `other_datadog_checks` variable as `datadog_checks` can't be override because
 it is already in use as a role dependency parameter. The role will combine
