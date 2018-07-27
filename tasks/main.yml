@@ -15,27 +15,72 @@
 
 - name: Get JAVA_HOME
   shell: . /etc/profile && echo $JAVA_HOME
-  register: JAVA_HOME
+  register: java_path
   changed_when: false
 
-- name: username/password in jmxremote.password
-  lineinfile:
-    path: "{{ JAVA_HOME.stdout|default('/usr/lib/jvm/java-8-oracle') }}/jre/lib/management/jmxremote.password"
-    line: "{{ user }} {{ password }}"
-    owner: "{{ jvm_user }}"
-    group: "{{ jvm_group }}"
-    mode: 0600
-    create: true
-    state: present
+- name: Redefine java_path if JAVA_HOME is defined
+  set_fact:
+    JAVA_HOME: '{{ java_path.stdout }}'
+  when: java_path.stdout != ""
 
-- name: username/role in jmxremote.access
-  lineinfile:
-    path: "{{ JAVA_HOME.stdout|default('/usr/lib/jvm/java-8-oracle') }}/jre/lib/management/jmxremote.access"
-    line: "{{ user }} readonly"
-    owner: "{{ jvm_user }}"
-    group: "{{ jvm_group }}"
-    create: true
-    state: present
+- name: Stat /etc/alternatives/java
+  stat:
+    path: /etc/alternatives/java
+  when: java_path.stdout == ""
+  register: alternatives_java_path
+
+- name: Get JAVA_HOME path from java bin path
+  set_fact:
+    JAVA_HOME: "{{ alternatives_java_path.replace('/bin/java', '') }}"
+  when: java_path.stdout == ""
+
+- name: Stat $JAVA_HOME/jre/lib/management
+  stat:
+    path: "{{ JAVA_HOME }}/jre/lib/management/"
+  register: java_path_test
+
+- name: Test $JAVA_HOME/jre/lib/management existence
+  fail:
+    msg: "JRE directory not found."
+  when: not java_path_test.stat.exists
+
+- vars:
+    management_path: "{{ JAVA_HOME }}/jre/lib/management/"
+  block:
+    - name: username/password in jmxremote.password
+      lineinfile:
+        path: "{{ management_path }}/jmxremote.password"
+        line: "{{ user }} {{ password }}"
+        owner: "{{ jvm_user }}"
+        group: "{{ jvm_group }}"
+        mode: 0600
+        create: true
+        state: present
+
+    - name: username/role in jmxremote.access
+      lineinfile:
+        path: "{{ management_path }}/jmxremote.access"
+        line: "{{ user }} readonly"
+        owner: "{{ jvm_user }}"
+        group: "{{ jvm_group }}"
+        create: true
+        state: present
+
+    # In case the files are symlinks (for ex. on Debian with OpenJDK or multiple JDKs)
+    - name: Set ownership of jmxremote.password
+      file:
+        path: "{{ management_path }}/jmxremote.password"
+        follow: true
+        owner: "{{ jvm_user }}"
+        group: "{{ jvm_group }}"
+        mode: 0600
+
+    - name: Set ownership of jmxremote.access
+      file:
+        path: "{{ management_path }}/jmxremote.access"
+        follow: true
+        owner: "{{ jvm_user }}"
+        group: "{{ jvm_group }}"
 
 - name: Add CA certificates
   apt:
