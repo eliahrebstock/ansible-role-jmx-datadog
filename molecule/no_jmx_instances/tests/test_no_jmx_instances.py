@@ -7,43 +7,19 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 
 def test_datadog_java_agent(host):
-    assert not host.file("/usr/local/bin/dd-java-agent.jar").exists
+    assert host.file("/usr/local/bin/dd-java-agent.jar").exists
 
 
 def test_user_in_jmx_password(host):
     java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout
     path = java_home + "/jre/lib/management/jmxremote.password"
-    jmx_file = host.file(path)
-    assert jmx_file.exists
-    assert jmx_file.contains("jmxuser test123abc")
-    if jmx_file.is_symlink:
-        real_jmx_file = host.file(jmx_file.linked_to)
-        assert real_jmx_file.user == "testuser"
-        assert real_jmx_file.group == "testuser"
-        assert real_jmx_file.mode == 0o600
-    elif jmx_file.is_file:
-        assert jmx_file.user == "testuser"
-        assert jmx_file.group == "testuser"
-        assert jmx_file.mode == 0o600
-    else:
-        assert False
+    assert host.file(path).contains("jmxuser test123abc")
 
 
 def test_user_in_jmx_access(host):
     java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout
     path = java_home + "/jre/lib/management/jmxremote.access"
-    jmx_file = host.file(path)
-    assert jmx_file.exists
-    assert jmx_file.contains("jmxuser readonly")
-    if jmx_file.is_symlink:
-        real_jmx_file = host.file(jmx_file.linked_to)
-        assert real_jmx_file.user == "testuser"
-        assert real_jmx_file.group == "testuser"
-    elif jmx_file.is_file:
-        assert jmx_file.user == "testuser"
-        assert jmx_file.group == "testuser"
-    else:
-        assert False
+    assert host.file(path).contains("jmxuser readonly")
 
 
 def test_datadog_agent_installed(host):
@@ -65,6 +41,10 @@ def test_datadog_jmx_yaml(host):
     path = "/etc/datadog-agent/conf.d/jmx.d/conf.yaml"
     ymlfile = host.file(path)
     assert ymlfile.exists
+    assert ymlfile.contains("name: app-test-instance")
+    assert ymlfile.contains("password: test123abc")
+    assert ymlfile.contains("port: 7199")
+    assert ymlfile.contains("user: jmxuser")
 
 
 def test_datadog_test_yaml(host):

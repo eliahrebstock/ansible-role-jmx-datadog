@@ -6,18 +6,23 @@
     - role: peopledoc.java
     - role: ansible-role-jmx-datadog
       vars:
-        user: jmxuser
-        password: test123abc
+        jmx_instances:
+          - port: 7199
+            user: username
+            password: changeit
+            name: app1
+          - port: 7299
+            user: username2
+            password: changeit2
+            name: app2
         jvm_user: testuser
         jvm_group: testuser
-        jmx_port: 7199
-        app_instance_name: app-test-instance
 
         other_datadog_checks:
           test:
             name: test
 
         datadog_api_key: apikey
-        datadog_agent_version: "1:6.1.4-1"
+        datadog_version: "6.3.1"
         datadog_config:
           tags: env:testing

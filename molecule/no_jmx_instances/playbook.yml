@@ -8,8 +8,8 @@
       vars:
         user: jmxuser
         password: test123abc
-        jvm_user: testuser
-        jvm_group: testuser
+        jvm_user: root
+        jvm_group: root
         jmx_port: 7199
         app_instance_name: app-test-instance
 
@@ -19,6 +19,5 @@
 
         datadog_api_key: apikey
         datadog_version: "6.3.1"
-        datadog_java_integration: false
         datadog_config:
           tags: env:testing

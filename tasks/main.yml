@@ -1,4 +1,42 @@
 ---
+- name: Set jmx_instances when using direct parameters
+  set_fact:
+    jmx_instances:
+      - user: "{{ user }}"
+        password: "{{ password }}"
+        port: "{{ jmx_port }}"
+        name: "{{ app_instance_name }}"
+  when: jmx_instances is not defined
+  no_log: true
+
+- name: Set canonical datadog agent version
+  set_fact:
+    datadog_version: "{{ datadog_agent_version|regex_search('(\\d+\\.\\d+\\.\\d+)') }}"
+  when: datadog_agent_version is defined and datadog_version is not defined
+
+- name: Set datadog package version
+  include_vars: "{{ ansible_os_family }}.yml"
+  when: datadog_version is defined and datadog_agent_version is not defined
+
+# https://github.com/DataDog/datadog-agent/blob/master/docs/agent/hostname-resolution.md
+- name: Set datadog_config
+  set_fact:
+    datadog_config: "{{ datadog_config | combine(hostname_fqdn_config|default({})) }}"
+  vars:
+    hostname_fqdn_config:
+      hostname: "{{ ansible_fqdn if datadog_version is version_compare('6.0.0', '>=') and datadog_version is version_compare('6.3.0', '<') else '' }}"
+      hostname_fqdn: true
+
+- name: Include role Datadog.datadog
+  import_role:
+    name: Datadog.datadog
+  vars:
+    jmx_check_config:
+      jmx:
+        init_config:
+          instances: "{{ jmx_instances|map('combine', {'hostname': 'localhost'})|list  }}"
+    datadog_checks: "{{ other_datadog_checks|combine(jmx_check_config) }}"
+  tags: datadog_agent
 
 - name: group {{ jvm_user }}
   group:
@@ -50,21 +88,26 @@
     - name: username/password in jmxremote.password
       lineinfile:
         path: "{{ management_path }}/jmxremote.password"
-        line: "{{ user }} {{ password }}"
+        line: "{{ item.user }} {{ item.password }}"
         owner: "{{ jvm_user }}"
         group: "{{ jvm_group }}"
         mode: 0600
         create: true
         state: present
+      with_items: "{{ jmx_instances }}"
+      no_log: true
+
 
     - name: username/role in jmxremote.access
       lineinfile:
         path: "{{ management_path }}/jmxremote.access"
-        line: "{{ user }} readonly"
+        line: "{{ item.user }} readonly"
         owner: "{{ jvm_user }}"
         group: "{{ jvm_group }}"
         create: true
         state: present
+      with_items: "{{ jmx_instances }}"
+      no_log: true
 
     # In case the files are symlinks (for ex. on Debian with OpenJDK or multiple JDKs)
     - name: Set ownership of jmxremote.password
@@ -96,10 +139,12 @@
 
 - name: Register jvm options for DataDog as string
   set_fact:
-    java_opts_datadog_jmx: "-Dcom.sun.management.jmxremote.port={{ jmx_port }}
+    java_opts_datadog_jmx: "-Dcom.sun.management.jmxremote.port={{ item.port }}
       -Dcom.sun.management.jmxremote.ssl=false
       {%- if datadog_java_integration %} -javaagent:/usr/local/bin/dd-java-agent.jar{% endif %}
-      -Ddd.service.name={{ app_instance_name }}"
+      -Ddd.service.name={{ item.name }}"
+  with_items: "{{ jmx_instances }}"
+  no_log: true
 
 - name: Register jvm options for DataDog as list
   set_fact:

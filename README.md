@@ -18,17 +18,22 @@ Add the role to your playbook :
 roles:
   - role: ansible-role-jmx-datadog
     vars:
-      user: username
-      password: changeit
-      jmx_port: 7199 # optional
+      jmx_instances:
+        - port: 7199
+          user: username
+          password: changeit
+          name: app1 # service name on APM
+        - port: 7299
+          user: username2
+          password: changeit2
+          name: app2 # service name on APM
       jvm_user: user
       jvm_group: group
       jvm_user_id: 1000 # optional
       jvm_group_id: 1000 # optional
-      app_instance_name: app
 
       datadog_api_key: "{{ vault_datadog_api_key }}"
-      datadog_agent_version: "1:6.1.4-1"
+      datadog_version: "6.1.4"
       datadog_java_integration: yes
       datadog_config:
         hostname: host.domain
@@ -40,7 +45,7 @@ If the ansible remote user is not `root` this role might fail. You can add
 `become: true` to the role invocation in that case.
 
 This role has the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog) as
-a dependency and will configure the jmx check for it. 
+a dependency and will configure the jmx check for it.
 You can add Datadog role parameters as parameters of this role (like `datadog_api_key`).
 
 You can also skip the Datadog role with `--skip-tags datadog_agent` to just setup JMX.
@@ -63,11 +68,16 @@ them for other JMX usages if needed.
 * `jvm_user` and `jvm_group` are the user/group who will run the application using JMX
 (change access rights on default `jmxremote.password` and `jmxremote.access` files in `$JAVA_HOME/jre/lib/management`).
 
-* You have to add some parameters for the Datadog role like `datadog_api_key` and `datadog_agent_version`. Please read the [Datadog Ansible Role documentation](https://github.com/DataDog/ansible-datadog/README.md).
+* `datadog_version` is the version of the agent. You can also define
+  `datadog_agent_version` from the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog/blob/master/README.md#role-variables) but `datadog_version` takes precedence.
+
+* You have to add some parameters for the Datadog role like `datadog_api_key`. Please read the [Datadog Ansible Role documentation](https://github.com/DataDog/ansible-datadog/).
 
 ### Optional
 
-* `jmx_port` is the port used by Datadog to contact the application using JMX on localhost. It defaults to 7199.
+* `jmx_port` is the port used by Datadog to contact the application
+  using JMX on localhost. It defaults to 7199. If you use multiple
+  instances for JMX, you need to add it for each instance.
 
 * `jvm_user_id` and `jvm_group_id` are used to configure UID and GID of `jvm_user` if the user doesn't already exist.
   You can safely skip using these parameters if `jvm_user` already exists on the host.

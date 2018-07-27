@@ -15,7 +15,8 @@ def test_user_in_jmx_password(host):
     path = java_home + "/jre/lib/management/jmxremote.password"
     jmx_file = host.file(path)
     assert jmx_file.exists
-    assert jmx_file.contains("jmxuser test123abc")
+    assert jmx_file.contains("username changeit")
+    assert jmx_file.contains("username2 changeit2")
     if jmx_file.is_symlink:
         real_jmx_file = host.file(jmx_file.linked_to)
         assert real_jmx_file.user == "testuser"
@@ -34,7 +35,8 @@ def test_user_in_jmx_access(host):
     path = java_home + "/jre/lib/management/jmxremote.access"
     jmx_file = host.file(path)
     assert jmx_file.exists
-    assert jmx_file.contains("jmxuser readonly")
+    assert jmx_file.contains("username readonly")
+    assert jmx_file.contains("username2 readonly")
     if jmx_file.is_symlink:
         real_jmx_file = host.file(jmx_file.linked_to)
         assert real_jmx_file.user == "testuser"
@@ -50,7 +52,7 @@ def test_datadog_agent_installed(host):
     assert host.exists("datadog-agent")
     cmd = host.run("datadog-agent version")
     assert cmd.rc == 0
-    assert "Agent 6.1.4" in cmd.stdout
+    assert "Agent 6.3.1" in cmd.stdout
 
 
 def test_datadog_yaml(host):
@@ -65,10 +67,14 @@ def test_datadog_jmx_yaml(host):
     path = "/etc/datadog-agent/conf.d/jmx.d/conf.yaml"
     ymlfile = host.file(path)
     assert ymlfile.exists
-    assert ymlfile.contains("name: app-test-instance")
-    assert ymlfile.contains("password: test123abc")
+    assert ymlfile.contains("name: app1")
+    assert ymlfile.contains("password: changeit")
     assert ymlfile.contains("port: 7199")
-    assert ymlfile.contains("user: jmxuser")
+    assert ymlfile.contains("user: username")
+    assert ymlfile.contains("name: app2")
+    assert ymlfile.contains("password: changeit2")
+    assert ymlfile.contains("port: 7299")
+    assert ymlfile.contains("user: username2")
 
 
 def test_datadog_test_yaml(host):

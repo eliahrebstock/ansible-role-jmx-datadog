@@ -1,0 +1,2 @@
+---
+datadog_agent_version: "1:{{ datadog_version }}-1"
