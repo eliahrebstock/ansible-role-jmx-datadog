@@ -34,7 +34,7 @@
     jmx_check_config:
       jmx:
         init_config:
-        instances: "{{ jmx_instances|map('combine', {'hostname': 'localhost'})|list  }}"
+        instances: "{{ jmx_instances|map('combine', {'host': 'localhost'})|list  }}"
     datadog_checks: "{{ other_datadog_checks|combine(jmx_check_config) }}"
   tags: datadog_agent
 
