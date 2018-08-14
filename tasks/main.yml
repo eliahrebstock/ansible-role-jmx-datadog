@@ -133,7 +133,7 @@
 
 - name: Add java datadog agent for applicative traces
   get_url:
-    url: "https://search.maven.org/remote_content?g=com.datadoghq&a=dd-java-agent&v={{ datadog_java_agent_version }}"
+    url: "https://search.maven.org/classic/remote_content?g=com.datadoghq&a=dd-java-agent&v={{ datadog_java_agent_version }}"
     dest: /usr/local/bin/dd-java-agent.jar
   when: datadog_java_integration
 
