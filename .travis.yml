@@ -15,7 +15,7 @@ env:
 
 install:
   - travis_retry pip install --upgrade pip setuptools wheel
-  - travis_retry pip install "${ANSIBLE_REF}" molecule docker
+  - travis_retry pip install "${ANSIBLE_REF}" 'molecule==2.16' docker
 
 script:
   - molecule --base-config molecule/base.yml test --driver-name docker --all
