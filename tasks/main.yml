@@ -59,18 +59,18 @@
 - name: Redefine java_path if JAVA_HOME is defined
   set_fact:
     JAVA_HOME: '{{ java_path.stdout }}'
-  when: java_path.stdout != ""
+  when: java_path.stdout is defined and java_path.stdout != ""
 
 - name: Stat /etc/alternatives/java
   stat:
     path: /etc/alternatives/java
-  when: java_path.stdout == ""
+  when: java_path.stdout is not defined or java_path.stdout == ""
   register: alternatives_java_path
 
 - name: Get JAVA_HOME path from java bin path
   set_fact:
     JAVA_HOME: "{{ alternatives_java_path.replace('/bin/java', '') }}"
-  when: java_path.stdout == ""
+  when: java_path.stdout is not defined or java_path.stdout == ""
 
 - name: Stat $JAVA_HOME/jre/lib/management
   stat:
