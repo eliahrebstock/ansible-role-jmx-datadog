@@ -6,7 +6,6 @@
     - role: peopledoc.java
     - role: ansible-role-jmx-datadog
       vars:
-        datadog_skip_running_check: true
         jmx_instances:
           - port: 7199
             user: username
