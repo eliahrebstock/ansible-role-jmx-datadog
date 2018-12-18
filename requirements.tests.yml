@@ -1,5 +1,7 @@
 ---
 
-- src: Datadog.datadog
+- name: Datadog.datadog
+  src: https://github.com/pilou-/ansible-datadog.git
+  version: service_module_fails_when_service_doesnt_exist
 - name: peopledoc.java
   src: https://github.com/peopledoc/ansible-role-java.git
