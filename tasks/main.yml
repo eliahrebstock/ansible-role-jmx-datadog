@@ -69,7 +69,7 @@
 
 - name: Get JAVA_HOME path from java bin path
   set_fact:
-    JAVA_HOME: "{{ alternatives_java_path.replace('/bin/java', '') if alternatives_java_path.stat.exists else '' }}"
+    JAVA_HOME: "{{ alternatives_java_path.stat.path.replace('/bin/java', '') if alternatives_java_path.stat.exists else '' }}"
   when: java_path.stdout is not defined or java_path.stdout == ""
 
 - name: Stat $JAVA_HOME/jre/lib/management
