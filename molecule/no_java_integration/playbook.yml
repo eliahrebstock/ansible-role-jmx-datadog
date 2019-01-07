@@ -18,7 +18,7 @@
             name: test
 
         datadog_api_key: apikey
-        datadog_version: "6.3.1"
+        datadog_version: "6.8.0"
         datadog_java_integration: false
         datadog_config:
           tags: env:testing

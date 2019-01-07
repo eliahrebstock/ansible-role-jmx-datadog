@@ -26,7 +26,7 @@ def test_datadog_agent_installed(host):
     assert host.exists("datadog-agent")
     cmd = host.run("datadog-agent version")
     assert cmd.rc == 0
-    assert "Agent 6.3.1" in cmd.stdout
+    assert "Agent 6.8.0" in cmd.stdout
 
 
 def test_datadog_yaml(host):

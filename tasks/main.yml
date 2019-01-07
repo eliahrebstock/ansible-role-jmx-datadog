@@ -69,21 +69,22 @@
 
 - name: Get JAVA_HOME path from java bin path
   set_fact:
-    JAVA_HOME: "{{ alternatives_java_path.replace('/bin/java', '') }}"
+    JAVA_HOME: "{{ alternatives_java_path.stat.lnk_source.replace('/bin/java', '') if alternatives_java_path.stat.exists else '' }}"
   when: java_path.stdout is not defined or java_path.stdout == ""
 
 - name: Stat $JAVA_HOME/jre/lib/management
   stat:
-    path: "{{ JAVA_HOME }}/jre/lib/management/"
+    path: "{{ JAVA_HOME }}/jre/lib/management"
   register: java_path_test
 
 - name: Test $JAVA_HOME/jre/lib/management existence
   fail:
     msg: "JRE directory not found."
-  when: not java_path_test.stat.exists
+  when: not java_path_test.stat.exists and not ansible_check_mode
 
 - vars:
     management_path: "{{ JAVA_HOME }}/jre/lib/management/"
+  when: not ansible_check_mode
   block:
     - name: username/password in jmxremote.password
       lineinfile:
@@ -135,7 +136,7 @@
   get_url:
     url: "https://search.maven.org/classic/remote_content?g=com.datadoghq&a=dd-java-agent&v={{ datadog_java_agent_version }}"
     dest: /usr/local/bin/dd-java-agent.jar
-  when: datadog_java_integration
+  when: datadog_java_integration and not ansible_check_mode
 
 - name: Register jvm options for DataDog as string
   set_fact:
