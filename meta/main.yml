@@ -13,6 +13,6 @@ galaxy_info:
   categories:
     - system
 
-  dependencies:
-    - src: Datadog.datadog
-      version: "2.4.0"
+dependencies:
+  - src: Datadog.datadog
+    version: "2.4.0"
