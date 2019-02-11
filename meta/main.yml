@@ -14,5 +14,5 @@ galaxy_info:
     - system
 
 dependencies:
-  - role: Datadog.datadog
+  - src: Datadog.datadog
     version: "2.4.0"
