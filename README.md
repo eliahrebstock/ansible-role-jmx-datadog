@@ -7,6 +7,8 @@ Overview
 
 Ansible role to setup JMX credentials and to add Datadog java agent.
 
+**You need to add `Datadog.datadog` to the requirements.yml of your project**. Cf [requirements.yml](requirements.yml).
+
 Usage
 -----
 
