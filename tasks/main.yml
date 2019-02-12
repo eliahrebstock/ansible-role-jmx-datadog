@@ -1,14 +1,4 @@
 ---
-- name: Set jmx_instances when using direct parameters
-  set_fact:
-    jmx_instances:
-      - user: "{{ user }}"
-        password: "{{ password }}"
-        port: "{{ jmx_port }}"
-        name: "{{ app_instance_name }}"
-  when: jmx_instances is not defined
-  no_log: true
-
 - name: Set canonical datadog agent version
   set_fact:
     datadog_version: "{{ datadog_agent_version|regex_search('(\\d+\\.\\d+\\.\\d+)') }}"

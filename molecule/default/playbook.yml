@@ -4,6 +4,8 @@
   become: true
   roles:
     - role: peopledoc.java
+      vars:
+        devsecops_ca_enabled: false
     - role: ansible-role-jmx-datadog
       vars:
         jmx_instances:

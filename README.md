@@ -58,12 +58,13 @@ Parameters
 
 ### Mandatory
 
-* `user` and `password` are the username/password pair for JMX (with readonly access).
-They are mandatory. The same ones will be used with the Datadog integration. You can use
-them for other JMX usages if needed.
-
-* `app_instance_name` is used to define service name for Datadog in the JMX integration
-  and with the Datadog java agent (`-Ddd.service.name`).
+* `jmx_instances` with :
+  * `user` and `password` are the username/password pair for JMX (with readonly access).
+  They are mandatory. The same ones will be used with the Datadog integration. You can use
+  them for other JMX usages if needed.
+  * `name` is used to define service name for Datadog in the JMX integration
+    and with the Datadog java agent (`-Ddd.service.name`).
+  * `port` is the port used by JMX for this instance.
 
 * `jvm_user` and `jvm_group` are the user/group who will run the application using JMX
 (change access rights on default `jmxremote.password` and `jmxremote.access` files in `$JAVA_HOME/jre/lib/management`).
@@ -74,10 +75,6 @@ them for other JMX usages if needed.
 * You have to add some parameters for the Datadog role like `datadog_api_key`. Please read the [Datadog Ansible Role documentation](https://github.com/DataDog/ansible-datadog/).
 
 ### Optional
-
-* `jmx_port` is the port used by Datadog to contact the application
-  using JMX on localhost. It defaults to 7199. If you use multiple
-  instances for JMX, you need to add it for each instance.
 
 * `jvm_user_id` and `jvm_group_id` are used to configure UID and GID of `jvm_user` if the user doesn't already exist.
   You can safely skip using these parameters if `jvm_user` already exists on the host.
