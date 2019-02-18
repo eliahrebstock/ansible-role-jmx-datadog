@@ -1,0 +1,33 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  roles:
+    - role: peopledoc.java
+      vars:
+        devsecops_ca_enabled: false
+        openjdk_version: 11
+        java_packages:
+          - openjdk-11-jdk
+    - role: ansible-role-jmx-datadog
+      vars:
+        jmx_instances:
+          - port: 7199
+            user: username
+            password: changeit
+            name: app1
+          - port: 7299
+            user: username2
+            password: changeit2
+            name: app2
+        jvm_user: testuser
+        jvm_group: testuser
+
+        other_datadog_checks:
+          test:
+            name: test
+
+        datadog_api_key: apikey
+        datadog_version: "6.8.0"
+        datadog_config:
+          tags: env:testing

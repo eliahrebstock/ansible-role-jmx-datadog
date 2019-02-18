@@ -62,18 +62,33 @@
     JAVA_HOME: "{{ alternatives_java_path.stat.lnk_source.replace('/bin/java', '') if alternatives_java_path.stat.exists else '' }}"
   when: java_path.stdout is not defined or java_path.stdout == ""
 
-- name: Stat $JAVA_HOME/jre/lib/management
+- name: Find active java version
+  shell: "{{ JAVA_HOME }}/bin/java -version 2>&1 | awk -F '\"' '/version/ {print $2}'"
+  register: java_version
+  changed_when: false
+
+- name: Find management folder for jdk version < 11
+  set_fact:
+    management_path: "{{ JAVA_HOME }}/jre/lib/management"
+  when: java_version.stdout is version_compare('11.0.0', '<')
+
+- name: Find management folder for jdk version >= 11
+  set_fact:
+    management_path: "{{ JAVA_HOME }}/conf/management"
+  when: java_version.stdout is version_compare('11.0.0', '>=')
+
+- name: "Stat {{ management_path }}"
   stat:
-    path: "{{ JAVA_HOME }}/jre/lib/management"
+    path: "{{ management_path }}"
   register: java_path_test
 
-- name: Test $JAVA_HOME/jre/lib/management existence
+- name: "Test {{ java_path_test.stat.path }} existence"
   fail:
-    msg: "JRE directory not found."
+    msg: "management directory not found."
   when: not java_path_test.stat.exists and not ansible_check_mode
 
 - vars:
-    management_path: "{{ JAVA_HOME }}/jre/lib/management/"
+    management_path: "{{ java_path_test.stat.path }}/"
   when: not ansible_check_mode
   block:
     - name: username/password in jmxremote.password

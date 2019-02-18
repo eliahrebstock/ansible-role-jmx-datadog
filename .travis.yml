@@ -8,9 +8,7 @@ python:
   - '3.6'
 
 env:
-  - ANSIBLE_REF='ansible<2.6' BASE_IMAGE=ubuntu:xenial
   - ANSIBLE_REF='ansible<2.6' BASE_IMAGE=debian:stretch
-  - ANSIBLE_REF='ansible<2.5' BASE_IMAGE=ubuntu:xenial
   - ANSIBLE_REF='ansible<2.5' BASE_IMAGE=debian:stretch
 
 install:

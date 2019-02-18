@@ -1,0 +1,6 @@
+---
+platforms:
+  - name: molecule_test_instance
+    image: ${BASE_IMAGE:-debian:stretch}
+scenario:
+  name: java11
