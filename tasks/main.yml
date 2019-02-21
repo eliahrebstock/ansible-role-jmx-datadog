@@ -70,22 +70,23 @@
 - name: Find management folder for jdk version < 11
   set_fact:
     management_path: "{{ JAVA_HOME }}/jre/lib/management"
-  when: java_version.stdout is version_compare('11.0.0', '<')
+  when: not ansible_check_mode and java_version.stdout is version_compare('11.0.0', '<')
 
 - name: Find management folder for jdk version >= 11
   set_fact:
     management_path: "{{ JAVA_HOME }}/conf/management"
-  when: java_version.stdout is version_compare('11.0.0', '>=')
+  when: not ansible_check_mode and java_version.stdout is version_compare('11.0.0', '>=')
 
 - name: "Stat {{ management_path }}"
   stat:
     path: "{{ management_path }}"
   register: java_path_test
+  when: not ansible_check_mode
 
 - name: "Test {{ java_path_test.stat.path }} existence"
   fail:
     msg: "management directory not found."
-  when: not java_path_test.stat.exists and not ansible_check_mode
+  when: not ansible_check_mode and not java_path_test.stat.exists
 
 - vars:
     management_path: "{{ java_path_test.stat.path }}/"
