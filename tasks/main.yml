@@ -142,6 +142,7 @@
   get_url:
     url: "https://search.maven.org/classic/remote_content?g=com.datadoghq&a=dd-java-agent&v={{ datadog_java_agent_version }}"
     dest: /usr/local/bin/dd-java-agent.jar
+    force: true
   when: datadog_java_integration and not ansible_check_mode
 
 - name: Register jvm options for DataDog as string

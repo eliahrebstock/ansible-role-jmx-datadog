@@ -22,6 +22,8 @@
 
         datadog_api_key: apikey
         datadog_version: "6.8.0"
+        # issue with service start in molecule
+        datadog_enabled: false
         datadog_java_integration: false
         datadog_config:
           tags: env:testing
