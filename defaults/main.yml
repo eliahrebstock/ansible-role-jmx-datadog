@@ -2,4 +2,4 @@
 
 other_datadog_checks: {}
 datadog_java_integration: true
-datadog_java_agent_version: LATEST
+datadog_java_agent_version: 0.41.0
