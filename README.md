@@ -81,8 +81,11 @@ Parameters
 
 * `datadog_java_integration: no` can be used to remove Datadog Java agent (the JMX integration will still
   be configured). You'll have to use another agent with the JMX parameters provided to this role.
+  **NB**: When `datadog_java_integration` is enabled, please make sure to add `-Ddd.jmxfetch.enabled=false` to your launch
+  command otherwise the JMX metrics will be collected twice (once by the Java Integration and once by the Java Agent) so the
+  values in the Datadog dashboards will be incorrect.
 
-* `datadog_java_agent_version` is the version used to fetch the [Datadog Java agent](https://github.com/datadog/dd-trace-java) from [Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.datadoghq%22%20AND%20a%3A%22dd-java-agent%22). Defaults to `LATEST`.
+* `datadog_java_agent_version` is the version used to fetch the [Datadog Java agent](https://github.com/datadog/dd-trace-java) from [Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.datadoghq%22%20AND%20a%3A%22dd-java-agent%22). Defaults to `0.41.0`.
 
 If you want to add more datadog checks configurations, you'll have to use the
 `other_datadog_checks` variable as `datadog_checks` can't be override because
@@ -108,7 +111,7 @@ variable for later reuse in a playbook:
 
 ```
 -Dcom.sun.management.jmxremote.port=7199 -Dcom.sun.management.jmxremote.ssl=false
--javaagent:/usr/local/bin/dd-java-agent.jar -Ddd.service.name=instance-name-on-datadog-interface
+-Ddd.jmxfetch.enabled=false -javaagent:/usr/local/bin/dd-java-agent.jar -Ddd.service.name=instance-name-on-datadog-interface
 ```
 
 These parameters are also accessible as a list if needed in `java_opts_datadog_jmx_list`. You can use the following to add the JVM options:

@@ -149,7 +149,7 @@
   set_fact:
     java_opts_datadog_jmx: "-Dcom.sun.management.jmxremote.port={{ item.port }}
       -Dcom.sun.management.jmxremote.ssl=false
-      {%- if datadog_java_integration %} -javaagent:/usr/local/bin/dd-java-agent.jar{% endif %}
+      {%- if datadog_java_integration %} -Ddd.jmxfetch.enabled=false -javaagent:/usr/local/bin/dd-java-agent.jar{% endif %}
       -Ddd.service.name={{ item.name }}"
   with_items: "{{ jmx_instances }}"
   no_log: true
