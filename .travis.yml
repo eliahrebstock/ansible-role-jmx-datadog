@@ -8,12 +8,12 @@ python:
   - '3.6'
 
 env:
-  - ANSIBLE_REF='ansible<2.6' BASE_IMAGE=debian:stretch
-  - ANSIBLE_REF='ansible<2.5' BASE_IMAGE=debian:stretch
+  - ANSIBLE_REF='ansible<2.9' BASE_IMAGE=debian:stretch
+  - ANSIBLE_REF='ansible~=2.9.0' BASE_IMAGE=debian:stretch
 
 install:
   - travis_retry pip install --upgrade pip setuptools wheel
-  - travis_retry pip install "${ANSIBLE_REF}" 'molecule==2.16' docker
+  - travis_retry pip install "${ANSIBLE_REF}" 'molecule==2.22' docker
 
 script:
   - molecule --base-config molecule/base.yml test --driver-name docker --all

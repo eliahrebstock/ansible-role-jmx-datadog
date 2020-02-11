@@ -2,11 +2,11 @@
 - name: Set canonical datadog agent version
   set_fact:
     datadog_version: "{{ datadog_agent_version|regex_search('(\\d+\\.\\d+\\.\\d+)') }}"
-  when: datadog_agent_version is defined and datadog_version is not defined
+  when: datadog_agent_version is defined and (datadog_agent_version | length ) and datadog_version is not defined
 
 - name: Set datadog package version
   include_vars: "{{ ansible_os_family }}.yml"
-  when: datadog_version is defined and datadog_agent_version is not defined
+  when: datadog_version is defined and (datadog_agent_version is not defined or (datadog_agent_version | length == 0))
 
 # https://github.com/DataDog/datadog-agent/blob/master/docs/agent/hostname-resolution.md
 - name: Set datadog_config
@@ -49,21 +49,25 @@
 - name: Redefine java_path if JAVA_HOME is defined
   set_fact:
     JAVA_HOME: '{{ java_path.stdout }}'
-  when: java_path.stdout is defined and java_path.stdout != ""
+  when: java_path.stdout is defined and (java_path.stdout | length )
 
 - name: Stat /etc/alternatives/java
   stat:
     path: /etc/alternatives/java
-  when: java_path.stdout is not defined or java_path.stdout == ""
+  when: java_path.stdout is not defined or (java_path.stdout | length == 0)
   register: alternatives_java_path
 
 - name: Get JAVA_HOME path from java bin path
   set_fact:
     JAVA_HOME: "{{ alternatives_java_path.stat.lnk_source.replace('/bin/java', '') if alternatives_java_path.stat.exists else '' }}"
-  when: java_path.stdout is not defined or java_path.stdout == ""
+  when: java_path.stdout is not defined or (java_path.stdout | length == 0)
 
 - name: Find active java version
-  shell: "{{ JAVA_HOME }}/bin/java -version 2>&1 | awk -F '\"' '/version/ {print $2}'"
+  shell: |
+    set -o pipefail
+    {{ JAVA_HOME }}/bin/java -version 2>&1 | awk -F '\"' '/version/ {print $2}'
+  args:
+    executable: /bin/bash
   register: java_version
   changed_when: false
 

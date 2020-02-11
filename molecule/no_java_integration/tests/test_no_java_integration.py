@@ -11,7 +11,7 @@ def test_datadog_java_agent(host):
 
 
 def test_user_in_jmx_password(host):
-    java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout
+    java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout.strip()
     path = java_home + "/jre/lib/management/jmxremote.password"
     jmx_file = host.file(path)
     assert jmx_file.exists
@@ -30,7 +30,7 @@ def test_user_in_jmx_password(host):
 
 
 def test_user_in_jmx_access(host):
-    java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout
+    java_home = host.run(". /etc/profile && echo $JAVA_HOME").stdout.strip()
     path = java_home + "/jre/lib/management/jmxremote.access"
     jmx_file = host.file(path)
     assert jmx_file.exists
