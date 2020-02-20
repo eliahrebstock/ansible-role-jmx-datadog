@@ -70,7 +70,7 @@ Parameters
 (change access rights on default `jmxremote.password` and `jmxremote.access` files in `$JAVA_HOME/jre/lib/management`).
 
 * `datadog_version` is the version of the agent. You can also define
-  `datadog_agent_version` from the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog/blob/master/README.md#role-variables) but `datadog_version` takes precedence.
+  `datadog_agent_version` from the [Datadog Ansible Role](https://github.com/DataDog/ansible-datadog/blob/master/README.md#role-variables) but `datadog_version` takes precedence. If you don't want to provide the complete version of the agent, you can specify only the expected major version thanks to the variable `datadog_agent_major_version`, in that case the variable `datadog_version` must not be set, however please note that you will need to upgrade the version of the role `Datadog.datadog` to the version 4 or higher in your `requirements.yml` to have access to this new variable.
 
 * You have to add some parameters for the Datadog role like `datadog_api_key`. Please read the [Datadog Ansible Role documentation](https://github.com/DataDog/ansible-datadog/).
 

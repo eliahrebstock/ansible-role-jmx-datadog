@@ -1,6 +1,6 @@
 ---
 
 - src: Datadog.datadog
-  version: 3.4.1
+  version: 4.1.1
 - name: peopledoc.java
   src: https://github.com/peopledoc/ansible-role-java.git

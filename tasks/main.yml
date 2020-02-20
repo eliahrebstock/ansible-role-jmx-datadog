@@ -14,7 +14,10 @@
     datadog_config: "{{ datadog_config | combine(hostname_fqdn_config|default({})) }}"
   vars:
     hostname_fqdn_config:
-      hostname: "{{ ansible_fqdn if datadog_version is version_compare('6.0.0', '>=') and datadog_version is version_compare('6.3.0', '<') else '' }}"
+      hostname: >
+        "{{ ansible_fqdn if datadog_version is defined
+        and datadog_version is version_compare('6.0.0', '>=')
+        and datadog_version is version_compare('6.3.0', '<') else '' }}"
       hostname_fqdn: true
 
 - name: Include role Datadog.datadog

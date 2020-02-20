@@ -21,7 +21,7 @@
             name: test
 
         datadog_api_key: apikey
-        datadog_version: "6.8.0"
+        datadog_agent_major_version: "6"
         # issue with service start in molecule
         datadog_enabled: false
         datadog_java_integration: false
