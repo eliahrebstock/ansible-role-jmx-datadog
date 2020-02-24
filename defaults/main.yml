@@ -3,3 +3,5 @@
 other_datadog_checks: {}
 datadog_java_integration: true
 datadog_java_agent_version: 0.41.0
+vault_datadog_config_file_path: "/etc/datadog/vault.yml"
+vault_datadog_path: datadog

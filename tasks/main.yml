@@ -31,6 +31,21 @@
     datadog_checks: "{{ other_datadog_checks|combine(jmx_check_config) }}"
   tags: datadog_agent
 
+- name: Create directory for systemd override
+  file:
+    path: "/etc/systemd/system/datadog-agent.service.d"
+    state: directory
+    mode: 0755
+
+- name: Use vault-cli env for datadog
+  template:
+    src: "datadog-override.conf.j2"
+    dest: "/etc/systemd/system/datadog-agent.service.d/override.conf"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart datadog-agent
+
 - name: group {{ jvm_user }}
   group:
     name: "{{ jvm_group }}"

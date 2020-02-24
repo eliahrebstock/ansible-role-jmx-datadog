@@ -1,0 +1,3 @@
+[Service]
+ExecStart=
+ExecStart=/usr/local/bin/vault --config-file {{ vault_datadog_config_file_path }} env --path {{ vault_datadog_path }}=DD -- /opt/datadog-agent/bin/agent/agent run -p /opt/datadog-agent/run/agent.pid
