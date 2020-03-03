@@ -75,6 +75,14 @@ def test_datadog_jmx_yaml(host):
     assert ymlfile.contains("password: changeit2")
     assert ymlfile.contains("port: 7299")
     assert ymlfile.contains("user: username2")
+    assert ymlfile.contains("user: username2")
+
+
+def test_datadog_config_yaml(host):
+    path = "/etc/datadog-agent/datadog.yaml"
+    ymlfile = host.file(path)
+    assert ymlfile.exists
+    assert ymlfile.contains("hostname: ''")
 
 
 def test_datadog_test_yaml(host):
